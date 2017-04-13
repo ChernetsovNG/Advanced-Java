@@ -10,13 +10,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Frontend extends HttpServlet{
+public class AuthServlet extends HttpServlet {
     private String login = "";
+    private String email = "";
+    private String password = "";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("lastLogin", login == null ? "" : login);
+        pageVariables.put("login", login == null ? "" : login);
+        pageVariables.put("email", email == null ? "" : email);
+        pageVariables.put("password", password == null ? "" : password);
 
         resp.getWriter().println(PageGenerator.getPage("authform.html", pageVariables));
 
