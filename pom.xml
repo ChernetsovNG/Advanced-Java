@@ -6,7 +6,6 @@
 
     <groupId>com.nchernetsov</groupId>
     <artifactId>WebServer</artifactId>
-    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

@@ -1,6 +1,13 @@
 package main;
 
 import frontend.SignInServlet;
+import frontend.SignUpServlet;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.Servlet;
 
@@ -17,5 +24,23 @@ public class Main {
         AccountService accountService = new AccountService();
 
         Servlet signIn = new SignInServlet(accountService);
+        Servlet signUp = new SignUpServlet(accountService);
+
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.addServlet(new ServletHolder(signIn), "/api/v1/auth/signin");
+        context.addServlet(new ServletHolder(signUp), "/api/v1/auth/signup");
+
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setDirectoriesListed(true);
+        resourceHandler.setResourceBase("public_html");
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[]{resourceHandler, context});
+
+        Server server = new Server(port);
+        server.setHandler(handlers);
+
+        server.start();
+        server.join();
     }
 }
